@@ -1,0 +1,37 @@
+﻿@typeparam TItem
+
+
+<table class="table" style="width:100%">
+    <thead style="background-color: #04AA6D; color: white; padding: 8px">
+        <tr>
+            @TableHeader
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Items )
+       {
+           if (RowTemplate is not null)
+           {
+               <tr style="text-align:center">
+                   @RowTemplate(item)
+               </tr>
+           }
+       }
+    </tbody>
+</table>
+
+
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment? TableHeader { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem>? RowTemplate { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; }
+}
