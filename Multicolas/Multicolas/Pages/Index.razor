@@ -360,6 +360,7 @@
     protected override Task OnInitializedAsync()
     {
         EstadoInicial.Semaforo = false;
+        procesoUIs = EstadoInicial.ProcesoGrafico;
         return base.OnInitializedAsync();
     }
 
@@ -384,9 +385,12 @@
             //await roundRobin.IniciarEjecucion();
             Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
             Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
+            StateHasChanged();
+            await Task.Delay(1500);
 
+            
             // UI
-            procesoUIs.Add(new ProcesoUI { Id = procesoDibujar.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
+            //procesoUIs.Add(new ProcesoUI { Id = procesoDibujar.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
             //rafagas[(rafagas.Count - 1)] = rafagas[(rafagas.Count - 1)] + 1;
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
             //---

@@ -1,4 +1,5 @@
 ﻿using Multicolas.Logica.General;
+using Multicolas.Shared;
 
 namespace Multicolas.Logica.RoundRobin
 {
@@ -111,10 +112,12 @@ namespace Multicolas.Logica.RoundRobin
             {
                 await estadoEjecucion.Ejecutar(siguiente);
                 EstadoInicial.TiempoGlobal++;
-
+                EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
+                Console.WriteLine(siguiente.Name + " ProcesoGrafico");
                 //await Task.Delay(1500);
 
-                //StateHasChanged();
+                StateHasChanged();
+
                 quantumAlterno++;
                 Console.WriteLine($"Quantum: {quantumAlterno}");
             }

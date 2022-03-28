@@ -1,8 +1,13 @@
-﻿namespace Multicolas.Logica.General
+﻿using Multicolas.Shared;
+
+namespace Multicolas.Logica.General
 {
     public class EstadoInicial
     {
         public static List<Proceso> InicialProceso { get; set; } = new List<Proceso>();
+
+        public static List<ProcesoUI> ProcesoGrafico { get; set; } = new List<ProcesoUI>();
+
 
         public static Queue<Proceso> ProcesosListos { get; set; } = new Queue<Proceso>();
 
