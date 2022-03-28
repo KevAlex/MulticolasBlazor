@@ -362,11 +362,11 @@
     {
         EstadoInicial.Semaforo = false;
         procesoUIs = EstadoInicial.ProcesoGrafico;
-        await DoMyThing();
+        await ActualizarUI();
         await base.OnInitializedAsync();
     }
 
-    public async Task DoMyThing(CancellationToken token = default(CancellationToken))
+    public async Task ActualizarUI(CancellationToken token = default(CancellationToken))
     {
         while (!token.IsCancellationRequested)
         {
