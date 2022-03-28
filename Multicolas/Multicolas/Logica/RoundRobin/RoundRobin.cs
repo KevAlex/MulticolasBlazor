@@ -92,7 +92,7 @@ namespace Multicolas.Logica.RoundRobin
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-            //await Task.Delay(1500);
+            await Task.Delay(1500);
 
             quantumAlterno = 0;
             // Historial de tiempos
@@ -114,9 +114,9 @@ namespace Multicolas.Logica.RoundRobin
                 EstadoInicial.TiempoGlobal++;
                 EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
                 Console.WriteLine(siguiente.Name + " ProcesoGrafico");
-                //await Task.Delay(1500);
+                await Task.Delay(1500);
 
-                StateHasChanged();
+                //StateHasChanged();
 
                 quantumAlterno++;
                 Console.WriteLine($"Quantum: {quantumAlterno}");

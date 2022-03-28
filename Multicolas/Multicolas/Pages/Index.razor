@@ -2,6 +2,7 @@
 @using Multicolas.Logica
 @using Multicolas.Logica.General
 @using Multicolas.Logica.RoundRobin
+@using System.Timers
 <PageTitle>Index</PageTitle>
 
 <div class="alert alert-info" role="alert" style="text-align:center; height:70px">
@@ -357,11 +358,28 @@
     private RoundRobin roundRobin = new RoundRobin();
 
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         EstadoInicial.Semaforo = false;
         procesoUIs = EstadoInicial.ProcesoGrafico;
-        return base.OnInitializedAsync();
+        await DoMyThing();
+        await base.OnInitializedAsync();
+    }
+
+    public async Task DoMyThing(CancellationToken token = default(CancellationToken))
+    {
+        while (!token.IsCancellationRequested)
+        {
+            this.StateHasChanged();
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1), token);
+            }
+            catch (TaskCanceledException)
+            {
+                break;
+            }
+        }
     }
 
     public async Task IniciarEjecucion()
@@ -388,7 +406,7 @@
             StateHasChanged();
             await Task.Delay(1500);
 
-            
+
             // UI
             //procesoUIs.Add(new ProcesoUI { Id = procesoDibujar.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
             //rafagas[(rafagas.Count - 1)] = rafagas[(rafagas.Count - 1)] + 1;
@@ -399,9 +417,9 @@
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
         }
 
-
-
     }
+
+    
 
     public async Task Bloquear()
     {
@@ -428,30 +446,30 @@
     }
 
 
- @*   @*// Dibujando el nombre del proceso en ejecucion*
-if (EstadoInicial.ListaEjecucion.Any())
-{
-    foreach (var eje in EstadoInicial.ListaEjecucion)
-    {
+    @*   @*// Dibujando el nombre del proceso en ejecucion*
+        if (EstadoInicial.ListaEjecucion.Any())
+        {
+        foreach (var eje in EstadoInicial.ListaEjecucion)
+        {
         @*<p style="display:inline; color:green">Proceso en ejecucion: @eje.Name</p>*@
 
-        @* <div class="alert alert-success" role="alert" style="height:55px; text-align:center ">
-            Proceso en ejecucion: @eje.Name
-            </div>*
-    }
-}
+    @* <div class="alert alert-success" role="alert" style="height:55px; text-align:center ">
+        Proceso en ejecucion: @eje.Name
+        </div>*
+        }
+        }
 
-@*// Dibujando el nombre del proceso en espera
-@foreach (var anulado in EstadoInicial.ProcesosListos)
-{
-    if ((anulado.TiempoLlegada <= EstadoInicial.TiempoGlobal) && (anulado.TiempoComienzo < EstadoInicial.TiempoGlobal))
-    {
+        @*// Dibujando el nombre del proceso en espera
+        @foreach (var anulado in EstadoInicial.ProcesosListos)
+        {
+        if ((anulado.TiempoLlegada <= EstadoInicial.TiempoGlobal) && (anulado.TiempoComienzo < EstadoInicial.TiempoGlobal))
+        {
         @*<p style="color:gray">Proceso(s) en espera: @anulado.Name</p>*@
 
-        @*<div class="alert alert-dark" role="alert" style="height:55px; text-align:center">
-            Proceso en espera: @anulado.Name
-            </div>
-    }
-}*@
+    @*<div class="alert alert-dark" role="alert" style="height:55px; text-align:center">
+        Proceso en espera: @anulado.Name
+        </div>
+        }
+        }*@
 }
 
