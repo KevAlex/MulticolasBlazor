@@ -34,5 +34,39 @@ namespace Multicolas.Logica.General
 
             return interno;
         }
+        public static Queue<Proceso> OrganizarCola(Queue<Proceso> cola)
+        {
+            Queue<Proceso> interno = new Queue<Proceso>();
+            List<Proceso> sortedProcesos = new List<Proceso>();
+            // Organizando la lista basado en la rafaga
+            sortedProcesos = cola.OrderBy(o => o.RafagaTemporal).ToList();
+
+            //foreach (Proceso item in cola)
+            //{
+            //    //if (item.TiempoLlegada <= EstadoInicial.TiempoGlobal)
+            //    //{
+            //    //&& (cola.Any(t => t.Name == item.Name)) == false
+            //    sortedProcesos.Add(item);
+            //    //interno.Enqueue(item);
+
+            //    //}
+
+            //    // Dos rafagas iguales definir logica para ordenar?
+            //    //item.RafagaTemporal = item.Rafaga;
+            //    Console.WriteLine($"name: {item.Name}, Rafaga: {item.Rafaga}");
+            //}
+            //sortedProcesos = sortedProcesos.OrderBy(o => o.RafagaTemporal).ToList();
+
+            foreach (var item in sortedProcesos)
+            {
+                interno.Enqueue(item);
+            }
+
+            //interno = (Queue<Proceso>)interno.OrderBy(o => o.RafagaTemporal);
+
+            //List<Proceso> sortedProcesos = interno.OrderBy(o => o.RafagaTemporal).ToList();
+
+            return interno;
+        }
     }
 }

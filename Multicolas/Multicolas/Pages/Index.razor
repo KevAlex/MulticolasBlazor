@@ -2,6 +2,8 @@
 @using Multicolas.Logica
 @using Multicolas.Logica.General
 @using Multicolas.Logica.RoundRobin
+@using Multicolas.Logica.FCFS
+@using Multicolas.Logica.SJF
 <PageTitle>Index</PageTitle>
 
 <div class="alert alert-info" role="alert" style="text-align:center; height:70px">
@@ -355,7 +357,8 @@
     private int aux = 0;
     private double poscTemp = 0.0;
     private RoundRobin roundRobin = new RoundRobin();
-
+    private FCFS fcfs = new FCFS();
+    private SJF sjf = new SJF();
 
     protected override Task OnInitializedAsync()
     {
@@ -384,11 +387,13 @@
         {
             //await roundRobin.IniciarEjecucion();
             Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
-            Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
+            Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
+            //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
+            //Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
             StateHasChanged();
             await Task.Delay(1500);
 
-            
+
             // UI
             //procesoUIs.Add(new ProcesoUI { Id = procesoDibujar.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
             //rafagas[(rafagas.Count - 1)] = rafagas[(rafagas.Count - 1)] + 1;
@@ -403,6 +408,10 @@
 
     }
 
+    public void cambiarestado()
+    {
+        StateHasChanged();
+    }
     public async Task Bloquear()
     {
         //await bloqueControl.AgregarProcesoInicial();

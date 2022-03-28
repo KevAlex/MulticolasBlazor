@@ -2,46 +2,47 @@
 using Multicolas.Shared;
 using Multicolas.Pages;
 
-namespace Multicolas.Logica.RoundRobin
+namespace Multicolas.Logica.SJF
 {
-    public class RoundRobin
+    public class SJF
     {
 
         private BloqueInicial bloqueControl;
-        private EstadoEjecucionR estadoEjecucion;
+        private EstadoEjecucionSJF estadoEjecucion;
         private EstadoBloqueo estadoBloqueo;
         private int quantumAlterno = 0;
         private int quantum = 2;
         private Pages.Index ind;
 
-        public RoundRobin()
+        public SJF()
 
         {
             //ind = i;
             bloqueControl = new BloqueInicial();
-            estadoEjecucion = new EstadoEjecucionR();
+            estadoEjecucion = new EstadoEjecucionSJF();
         }
 
 
         public async Task IniciarEjecucion()
         {
+
             EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
             EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
             EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
             EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
 
             EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
-
+            
 
             while (EstadoInicial.ProcesosListos.Count > 0)
             {
+                EstadoInicial.ProcesosListos = EstadoInicial.OrganizarCola(EstadoInicial.ProcesosListos);
+
                 Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
 
                 siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-                //await Task.Delay(1500);
-
-                quantumAlterno = 0;
+                
                 // Historial de tiempos
                 if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                     (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -55,7 +56,7 @@ namespace Multicolas.Logica.RoundRobin
 
                 }
 
-                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false && quantumAlterno <= quantum)
+                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
                 {
                     await estadoEjecucion.Ejecutar(siguiente);
                     EstadoInicial.TiempoGlobal++;
@@ -64,8 +65,8 @@ namespace Multicolas.Logica.RoundRobin
                    
                    // ind.cambiarestado();
 
-                    quantumAlterno++;
-                    Console.WriteLine($"Quantum: {quantumAlterno}");
+                  
+                   
                 }
                 if (EstadoInicial.ListaEjecucion.Contains(siguiente))
                 {
@@ -91,15 +92,14 @@ namespace Multicolas.Logica.RoundRobin
 
 
 
-        public async Task<Proceso> IniciaRoundRobin(Proceso procesoEntrante)
+        public async Task<Proceso> IniciarSJF(Proceso procesoEntrante)
         {
+            EstadoInicial.ProcesosListos = EstadoInicial.OrganizarCola(EstadoInicial.ProcesosListos);
             //Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-            //await Task.Delay(1500);
-
-            quantumAlterno = 0;
+            
             // Historial de tiempos
             if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                 (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -113,8 +113,9 @@ namespace Multicolas.Logica.RoundRobin
 
             }
 
-            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false && quantumAlterno <= quantum)
+            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
             {
+
                 await estadoEjecucion.Ejecutar(siguiente);
                 EstadoInicial.TiempoGlobal++;
                 EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
@@ -124,7 +125,7 @@ namespace Multicolas.Logica.RoundRobin
               
               // StateHasChanged();
 
-                quantumAlterno++;
+              
                 Console.WriteLine($"Quantum: {quantumAlterno}");
             }
             if (EstadoInicial.ListaEjecucion.Contains(siguiente))

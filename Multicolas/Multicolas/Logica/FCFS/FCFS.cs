@@ -2,24 +2,24 @@
 using Multicolas.Shared;
 using Multicolas.Pages;
 
-namespace Multicolas.Logica.RoundRobin
+namespace Multicolas.Logica.FCFS
 {
-    public class RoundRobin
+    public class FCFS
     {
 
         private BloqueInicial bloqueControl;
-        private EstadoEjecucionR estadoEjecucion;
+        private EstadoEjecucionFC estadoEjecucion;
         private EstadoBloqueo estadoBloqueo;
         private int quantumAlterno = 0;
         private int quantum = 2;
         private Pages.Index ind;
 
-        public RoundRobin()
+        public FCFS()
 
         {
             //ind = i;
             bloqueControl = new BloqueInicial();
-            estadoEjecucion = new EstadoEjecucionR();
+            estadoEjecucion = new EstadoEjecucionFC();
         }
 
 
@@ -39,9 +39,7 @@ namespace Multicolas.Logica.RoundRobin
 
                 siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-                //await Task.Delay(1500);
-
-                quantumAlterno = 0;
+                
                 // Historial de tiempos
                 if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                     (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -55,7 +53,7 @@ namespace Multicolas.Logica.RoundRobin
 
                 }
 
-                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false && quantumAlterno <= quantum)
+                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
                 {
                     await estadoEjecucion.Ejecutar(siguiente);
                     EstadoInicial.TiempoGlobal++;
@@ -64,8 +62,8 @@ namespace Multicolas.Logica.RoundRobin
                    
                    // ind.cambiarestado();
 
-                    quantumAlterno++;
-                    Console.WriteLine($"Quantum: {quantumAlterno}");
+                  
+                   
                 }
                 if (EstadoInicial.ListaEjecucion.Contains(siguiente))
                 {
@@ -91,15 +89,13 @@ namespace Multicolas.Logica.RoundRobin
 
 
 
-        public async Task<Proceso> IniciaRoundRobin(Proceso procesoEntrante)
+        public async Task<Proceso> IniciarFCFS(Proceso procesoEntrante)
         {
             //Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-            //await Task.Delay(1500);
-
-            quantumAlterno = 0;
+            
             // Historial de tiempos
             if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                 (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -113,7 +109,7 @@ namespace Multicolas.Logica.RoundRobin
 
             }
 
-            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false && quantumAlterno <= quantum)
+            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
             {
                 await estadoEjecucion.Ejecutar(siguiente);
                 EstadoInicial.TiempoGlobal++;
@@ -124,8 +120,8 @@ namespace Multicolas.Logica.RoundRobin
               
               // StateHasChanged();
 
-                quantumAlterno++;
-                Console.WriteLine($"Quantum: {quantumAlterno}");
+              
+                
             }
             if (EstadoInicial.ListaEjecucion.Contains(siguiente))
             {
