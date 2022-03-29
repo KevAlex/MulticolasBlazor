@@ -8,8 +8,13 @@ namespace Multicolas.Logica.General
 
         public static List<ProcesoUI> ProcesoGrafico { get; set; } = new List<ProcesoUI>();
 
-
         public static Queue<Proceso> ProcesosListos { get; set; } = new Queue<Proceso>();
+
+        public static Queue<Proceso> ProcesosListosFO { get; set; } = new Queue<Proceso>();
+
+        public static Queue<Proceso> ProcesosListosSJF { get; set; } = new Queue<Proceso>();
+
+        public static bool NuevoProceso { set; get; } = false;
 
         public static List<Proceso> FinalProceso { get; set; } = new List<Proceso>();
 

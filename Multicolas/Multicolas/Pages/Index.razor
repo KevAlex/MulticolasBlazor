@@ -360,9 +360,9 @@
     private FCFS fcfs = new FCFS();
     private SJF sjf = new SJF();
 
-   
 
-     protected override async Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
         EstadoInicial.Semaforo = false;
         procesoUIs = EstadoInicial.ProcesoGrafico;
@@ -370,7 +370,7 @@
         await base.OnInitializedAsync();
     }
 
-      public async Task ActualizarUI(CancellationToken token = default(CancellationToken))
+    public async Task ActualizarUI(CancellationToken token = default(CancellationToken))
     {
         while (!token.IsCancellationRequested)
         {
@@ -390,27 +390,26 @@
     {
         //await bloqueControl.AgregarProcesoInicial();
         //UI
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 5, TiempoLlegada = 1 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
 
         EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
 
 
 
-        // Crear un EstadoInicial por Algoritmo
-
+        // Al llamar un algoritmo usar: await xxx.Iniciar
+        
 
         while (EstadoInicial.ProcesosListos.Count > 0)
         {
-            //await roundRobin.IniciarEjecucion();
             Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
-           Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
+            //Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
             //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
-            //Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
+            Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
             StateHasChanged();
-            await Task.Delay(1500);
+            //await Task.Delay(1500);
 
 
             // UI
@@ -422,6 +421,15 @@
             rafagas.Add(EstadoInicial.TiempoGlobal);
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
         }
+        if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count >0))
+        {
+            while ((EstadoInicial.ProcesosListosFO.Count >0) && (EstadoInicial.NuevoProceso == false) )
+            {
+                
+            }
+
+        }
+
 
 
 
