@@ -340,8 +340,15 @@
         <ProcesoUI Color="gray" Posicion=EstadoInicial.TiempoGlobal Id=@anulado.Name />
     }
 }
-<br />
 
+@foreach (var anulado in EstadoInicial.ProcesosListosFO)
+{
+    if ((anulado.TiempoLlegada < EstadoInicial.TiempoGlobal) && (anulado.TiempoComienzo < EstadoInicial.TiempoGlobal))
+    {
+        <br />
+        <ProcesoUI Color="gray" Posicion=EstadoInicial.TiempoGlobal Id=@anulado.Name />
+    }
+}
 <br />
 <br />
 
@@ -390,17 +397,18 @@
     {
         //await bloqueControl.AgregarProcesoInicial();
         //UI
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
+        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 5, TiempoLlegada = 1 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
 
+        // Solo para RoundRobin y SJF
         EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
 
 
 
         // Al llamar un algoritmo usar: await xxx.Iniciar
-        
+
 
         while (EstadoInicial.ProcesosListos.Count > 0)
         {
@@ -421,11 +429,21 @@
             rafagas.Add(EstadoInicial.TiempoGlobal);
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
         }
-        if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count >0))
+
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = 2, RafagaTemporal =3 });
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = 1, RafagaTemporal =3 });
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = 0, RafagaTemporal =2 });
+
+        if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
         {
-            while ((EstadoInicial.ProcesosListosFO.Count >0) && (EstadoInicial.NuevoProceso == false) )
+
+
+            while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
             {
-                
+                Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
+
+                await fcfs.IniciarFCFS(procesoSiguiente);
+
             }
 
         }
@@ -464,30 +482,30 @@
     }
 
 
- @*   @*// Dibujando el nombre del proceso en ejecucion*
-if (EstadoInicial.ListaEjecucion.Any())
-{
-    foreach (var eje in EstadoInicial.ListaEjecucion)
-    {
+    @*   @*// Dibujando el nombre del proceso en ejecucion*
+        if (EstadoInicial.ListaEjecucion.Any())
+        {
+        foreach (var eje in EstadoInicial.ListaEjecucion)
+        {
         @*<p style="display:inline; color:green">Proceso en ejecucion: @eje.Name</p>*@
 
-        @* <div class="alert alert-success" role="alert" style="height:55px; text-align:center ">
-            Proceso en ejecucion: @eje.Name
-            </div>*
-    }
-}
+    @* <div class="alert alert-success" role="alert" style="height:55px; text-align:center ">
+        Proceso en ejecucion: @eje.Name
+        </div>*
+        }
+        }
 
-@*// Dibujando el nombre del proceso en espera
-@foreach (var anulado in EstadoInicial.ProcesosListos)
-{
-    if ((anulado.TiempoLlegada <= EstadoInicial.TiempoGlobal) && (anulado.TiempoComienzo < EstadoInicial.TiempoGlobal))
-    {
+        @*// Dibujando el nombre del proceso en espera
+        @foreach (var anulado in EstadoInicial.ProcesosListos)
+        {
+        if ((anulado.TiempoLlegada <= EstadoInicial.TiempoGlobal) && (anulado.TiempoComienzo < EstadoInicial.TiempoGlobal))
+        {
         @*<p style="color:gray">Proceso(s) en espera: @anulado.Name</p>*@
 
-        @*<div class="alert alert-dark" role="alert" style="height:55px; text-align:center">
-            Proceso en espera: @anulado.Name
-            </div>
-    }
-}*@
+    @*<div class="alert alert-dark" role="alert" style="height:55px; text-align:center">
+        Proceso en espera: @anulado.Name
+        </div>
+        }
+        }*@
 }
 

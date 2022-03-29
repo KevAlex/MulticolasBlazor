@@ -1,6 +1,5 @@
 ﻿using Multicolas.Logica.General;
 using Multicolas.Shared;
-using Multicolas.Pages;
 
 namespace Multicolas.Logica.FCFS
 {
@@ -25,13 +24,6 @@ namespace Multicolas.Logica.FCFS
 
         public async Task IniciarEjecucion()
         {
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
-
-            EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
-
 
             while (EstadoInicial.ProcesosListos.Count > 0)
             {
@@ -39,7 +31,7 @@ namespace Multicolas.Logica.FCFS
 
                 siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-                
+
                 // Historial de tiempos
                 if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                     (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -53,17 +45,17 @@ namespace Multicolas.Logica.FCFS
 
                 }
 
-                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
+                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false)
                 {
                     await estadoEjecucion.Ejecutar(siguiente);
                     EstadoInicial.TiempoGlobal++;
 
                     //await Task.Delay(1500);
-                   
-                   // ind.cambiarestado();
 
-                  
-                   
+                    // ind.cambiarestado();
+
+
+
                 }
                 if (EstadoInicial.ListaEjecucion.Contains(siguiente))
                 {
@@ -95,7 +87,7 @@ namespace Multicolas.Logica.FCFS
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
 
-            
+
             // Historial de tiempos
             if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
                 (siguiente.TiempoComienzoH.Contains(EstadoInicial.TiempoGlobal)))
@@ -109,7 +101,7 @@ namespace Multicolas.Logica.FCFS
 
             }
 
-            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
+            while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false)
             {
                 await estadoEjecucion.Ejecutar(siguiente);
                 EstadoInicial.TiempoGlobal++;
@@ -117,11 +109,9 @@ namespace Multicolas.Logica.FCFS
                 Console.WriteLine(siguiente.Name + " ProcesoGrafico");
                 await Task.Delay(1500);
 
-              
-              // StateHasChanged();
 
-              
-                
+                // StateHasChanged();
+
             }
             if (EstadoInicial.ListaEjecucion.Contains(siguiente))
             {

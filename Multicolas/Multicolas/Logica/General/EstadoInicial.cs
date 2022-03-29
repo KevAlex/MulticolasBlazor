@@ -14,6 +14,8 @@ namespace Multicolas.Logica.General
 
         public static Queue<Proceso> ProcesosListosSJF { get; set; } = new Queue<Proceso>();
 
+        // A ser usada cuando se agregue un nuevo proceso
+        // a un algoritmo con mayor prioridad
         public static bool NuevoProceso { set; get; } = false;
 
         public static List<Proceso> FinalProceso { get; set; } = new List<Proceso>();
