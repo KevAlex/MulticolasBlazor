@@ -120,7 +120,7 @@ namespace Multicolas.Logica.SJF
                 EstadoInicial.TiempoGlobal++;
                 EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
                 Console.WriteLine(siguiente.Name + " ProcesoGrafico");
-                //await Task.Delay(1500);
+                await Task.Delay(1500);
 
               
               // StateHasChanged();

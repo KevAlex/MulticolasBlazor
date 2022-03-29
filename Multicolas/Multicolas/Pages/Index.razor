@@ -360,11 +360,30 @@
     private FCFS fcfs = new FCFS();
     private SJF sjf = new SJF();
 
-    protected override Task OnInitializedAsync()
+   
+
+     protected override async Task OnInitializedAsync()
     {
         EstadoInicial.Semaforo = false;
         procesoUIs = EstadoInicial.ProcesoGrafico;
-        return base.OnInitializedAsync();
+        await ActualizarUI();
+        await base.OnInitializedAsync();
+    }
+
+      public async Task ActualizarUI(CancellationToken token = default(CancellationToken))
+    {
+        while (!token.IsCancellationRequested)
+        {
+            this.StateHasChanged();
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1), token);
+            }
+            catch (TaskCanceledException)
+            {
+                break;
+            }
+        }
     }
 
     public async Task IniciarEjecucion()
@@ -387,7 +406,7 @@
         {
             //await roundRobin.IniciarEjecucion();
             Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
-            Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
+           Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
             //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
             //Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
             StateHasChanged();
