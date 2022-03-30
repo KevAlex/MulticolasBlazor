@@ -401,6 +401,7 @@
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 5, TiempoLlegada = 1 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
+        int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
 
         // Solo para RoundRobin y SJF
         EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
@@ -430,9 +431,12 @@
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
         }
 
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = 2, RafagaTemporal =3 });
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = 1, RafagaTemporal =3 });
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = 0, RafagaTemporal =2 });
+        //
+        //int tiempoLLegada = EstadoInicial.FinalProceso.LastOrDefault().TiempoLlegada;
+
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada+1, RafagaTemporal = 3 });
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada+2, RafagaTemporal = 3});
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada+3, RafagaTemporal =2 });
 
         if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
         {
