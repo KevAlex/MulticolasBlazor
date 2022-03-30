@@ -11,9 +11,9 @@
 </div>
 
 <div style="text-align:center; ">
-    <button type="button" class="btn btn-primary" @onclick="IniciarBloque">Agregar procesos a RR</button>
+    <button type="button" class="btn btn-primary" @onclick="IniciarBloque">Agregar procesos</button>
     <button type="button" class="btn btn-success" @onclick="IniciarEjecucion">Expedir procesos</button>
-    <button type="button" class="btn btn-primary" @onclick="Agregar">Agregar proceso a RR</button>
+    <button type="button" class="btn btn-primary" @onclick="AgregarRR">Agregar proceso a RR</button>
     <button type="button" class="btn btn-danger" @onclick="Bloquear">Bloquear proceso</button>
     @*<button @onclick="Reinicio">Reiniciar</button>*@
 
@@ -366,12 +366,14 @@
     private RoundRobin roundRobin = new RoundRobin();
     private FCFS fcfs = new FCFS();
     private SJF sjf = new SJF();
+    private BloqueInicial bloqueInicial;
 
 
 
     protected override async Task OnInitializedAsync()
     {
         EstadoInicial.Semaforo = false;
+        bloqueInicial = new BloqueInicial();
         procesoUIs = EstadoInicial.ProcesoGrafico;
         await ActualizarUI();
         await base.OnInitializedAsync();
@@ -395,21 +397,19 @@
 
     public async Task IniciarEjecucion()
     {
-        //await bloqueControl.AgregarProcesoInicial();
-        //UI
+
         //EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 5, TiempoLlegada = 1 });
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
-        int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
+        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
+        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
+        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
+        
+        // Revisar esto!!!!
+        //int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
 
         // Solo para RoundRobin y SJF
-        EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
-
-
+        //EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
 
         // Al llamar un algoritmo usar: await xxx.Iniciar
-
 
         while (EstadoInicial.ProcesosListos.Count > 0)
         {
@@ -418,48 +418,61 @@
             //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
             Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
             StateHasChanged();
-            //await Task.Delay(1500);
 
-
-            // UI
-            //procesoUIs.Add(new ProcesoUI { Id = procesoDibujar.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
-            //rafagas[(rafagas.Count - 1)] = rafagas[(rafagas.Count - 1)] + 1;
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
-            //---
-
             rafagas.Add(EstadoInicial.TiempoGlobal);
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
         }
 
         //
         //int tiempoLLegada = EstadoInicial.FinalProceso.LastOrDefault().TiempoLlegada;
+        EstadoInicial.NuevoProceso = false;
 
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada+1, RafagaTemporal = 3 });
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada+2, RafagaTemporal = 3});
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada+3, RafagaTemporal =2 });
+        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada + 1, RafagaTemporal = 3 });
+        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada + 2, RafagaTemporal = 3 });
+        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada + 3, RafagaTemporal = 2 });
 
         if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
         {
-
-
             while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
             {
                 Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
-
                 await fcfs.IniciarFCFS(procesoSiguiente);
-
             }
 
         }
-
-
-
+        else if (EstadoInicial.NuevoProceso == false)
+        {
+            if ((EstadoInicial.ProcesosListosFO.Count == 0) && (EstadoInicial.ProcesosListosSJF.Count > 0))
+            {
+                while ((EstadoInicial.ProcesosListosSJF.Count > 0) && (EstadoInicial.NuevoProceso == false))
+                {
+                    Proceso procesoSiguiente = EstadoInicial.ProcesosListosSJF.Dequeue();
+                    //SJF.iniciar
+                }
+            }
+        }
 
     }
 
-    public void cambiarestado()
+    public async Task AgregarRR()
     {
-        StateHasChanged();
+        EstadoInicial.NuevoProceso = true;
+     // Revisar valor del contador
+        await bloqueInicial.AgregarNuevoProceso();
+
+    }
+
+    public async Task AgregarFO()
+    {
+        EstadoInicial.NuevoProceso = true;
+        await bloqueInicial.AgregarNuevoProcesoFO();
+    }
+
+    public async Task AgregarSJF()
+    {
+        EstadoInicial.NuevoProceso = true;
+        //await bloqueControl.AgregarNuevoProceso();
     }
     public async Task Bloquear()
     {
@@ -470,6 +483,13 @@
     public async Task IniciarBloque()
     {
         //await bloqueControl.AgregarProcesoInicial();
+        // Lineas Solo de prueba
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada =  1, RafagaTemporal = 3 });
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = 2, RafagaTemporal = 3 });
+        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = 3, RafagaTemporal = 2 });
+
+        await bloqueInicial.AgregarProcesoInicial();
+
     }
 
     public async Task Reinicio()
@@ -479,11 +499,7 @@
         //EstadoInicial.FinalProceso.Clear();
 
     }
-    public async Task Agregar()
-    {
-        //await bloqueControl.AgregarNuevoProceso();
 
-    }
 
 
     @*   @*// Dibujando el nombre del proceso en ejecucion*
