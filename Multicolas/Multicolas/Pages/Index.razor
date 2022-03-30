@@ -11,9 +11,11 @@
 </div>
 
 <div style="text-align:center; ">
-    <button type="button" class="btn btn-primary" @onclick="IniciarBloque">Agregar procesos a RR</button>
+    <button type="button" class="btn btn-primary" @onclick="IniciarBloque">Agregar procesos a todas las colas</button>
     <button type="button" class="btn btn-success" @onclick="IniciarEjecucion">Expedir procesos</button>
     <button type="button" class="btn btn-primary" @onclick="Agregar">Agregar proceso a RR</button>
+    <button type="button" class="btn btn-primary" @onclick="Agregar">Agregar proceso a FCFS</button>
+    <button type="button" class="btn btn-primary" @onclick="Agregar">Agregar proceso a SJF</button>
     <button type="button" class="btn btn-danger" @onclick="Bloquear">Bloquear proceso</button>
     @*<button @onclick="Reinicio">Reiniciar</button>*@
 
@@ -56,9 +58,7 @@
                         <th>Tiempo Llegada</th>
                         <th>Rafaga</th>
                         <th>Tiempo Comienzo</th>
-                        <th>Tiempo Final</th>
-                        <th>Tiempo Retorno</th>
-                        <th>Tiempo Espera</th>
+
                     </TableHeader>
                     <RowTemplate>
                         <td style="border: 1px solid #ddd">
@@ -97,51 +97,7 @@
                             @context.TiempoComienzo
                             }
                     </td>
-                    <td style="border: 1px solid #ddd">
-
-                        @if (@context.TiempoFinalH.Any())
-                            {
-                                foreach (var item in context.TiempoFinalH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoFinal
-                            }
-                    </td>
-                    <td style="border: 1px solid #ddd">
-                        @if (@context.RetornoH.Any())
-                            {
-                                foreach (var item in context.RetornoH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoRetorno
-
-                            }
-                    </td>
-                    <td style="border: 1px solid #ddd">
-                        @if (@context.EsperaH.Any())
-                            {
-                                foreach (var item in context.EsperaH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoEspera
-
-                            }
-                    </td>
+                    
                 </RowTemplate>
             </TablaComponent>
 
@@ -150,7 +106,131 @@
             {
                 @*<p style="text-align:center">No hay más procesos en el estado Listo</p>*@
                 <div class="alert alert-danger" role="alert" style="text-align:center">
-                    No hay procesos en el estado Listo
+                    No hay procesos en la cola RR
+                </div>
+            }
+
+        </div>
+         <div class="col">
+            @if (EstadoInicial.ProcesosListos.Any())
+            {
+                <TablaComponent Items=EstadoInicial.ProcesosListos>
+                    <TableHeader>
+                        <th>Proceso</th>
+                        <th>Tiempo Llegada</th>
+                        <th>Rafaga</th>
+                        <th>Tiempo Comienzo</th>
+                        
+                    </TableHeader>
+                    <RowTemplate>
+                        <td style="border: 1px solid #ddd">
+                            @context.Name
+                        </td>
+                        <td style="border: 1px solid #ddd">
+                            @context.TiempoLlegada
+                        </td>
+                        <td style="border: 1px solid #ddd">
+
+                            @if (@context.RafagaH.Any())
+                            {
+                                foreach (var item in context.RafagaH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.RafagaTemporal
+                            }
+                    </td>
+                    <td style="border: 1px solid #ddd">
+
+                        @if (@context.TiempoComienzoH.Any())
+                            {
+                                foreach (var item in context.TiempoComienzoH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.TiempoComienzo
+                            }
+                    </td>
+                    
+                </RowTemplate>
+            </TablaComponent>
+
+            }
+            else
+            {
+                @*<p style="text-align:center">No hay más procesos en el estado Listo</p>*@
+                <div class="alert alert-danger" role="alert" style="text-align:center">
+                    No hay procesos en la cola FCFS
+                </div>
+            }
+
+        </div>
+         <div class="col">
+            @if (EstadoInicial.ProcesosListos.Any())
+            {
+                <TablaComponent Items=EstadoInicial.ProcesosListos>
+                    <TableHeader>
+                        <th>Proceso</th>
+                        <th>Tiempo Llegada</th>
+                        <th>Rafaga</th>
+                        <th>Tiempo Comienzo</th>
+                        
+                    </TableHeader>
+                    <RowTemplate>
+                        <td style="border: 1px solid #ddd">
+                            @context.Name
+                        </td>
+                        <td style="border: 1px solid #ddd">
+                            @context.TiempoLlegada
+                        </td>
+                        <td style="border: 1px solid #ddd">
+
+                            @if (@context.RafagaH.Any())
+                            {
+                                foreach (var item in context.RafagaH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.RafagaTemporal
+                            }
+                    </td>
+                    <td style="border: 1px solid #ddd">
+
+                        @if (@context.TiempoComienzoH.Any())
+                            {
+                                foreach (var item in context.TiempoComienzoH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.TiempoComienzo
+                            }
+                    </td>
+                    
+                </RowTemplate>
+            </TablaComponent>
+
+            }
+            else
+            {
+                @*<p style="text-align:center">No hay más procesos en el estado Listo</p>*@
+                <div class="alert alert-danger" role="alert" style="text-align:center">
+                    No hay procesos en la cola SJF
                 </div>
             }
 
@@ -167,8 +247,9 @@
                         <th>Rafaga</th>
                         <th>Tiempo Comienzo</th>
                         <th>Tiempo Final</th>
-                        <th>Tiempo Retorno</th>
                         <th>Tiempo Espera</th>
+                        <th>Tiempo Retorno</th>
+                        
                     </TableHeader>
                     <RowTemplate>
                         <td style="border: 1px solid #ddd">
@@ -390,12 +471,14 @@
     {
         //await bloqueControl.AgregarProcesoInicial();
         //UI
-        EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
+       @*
+           EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
         EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
 
         EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
+        *@
 
 
 
@@ -406,7 +489,7 @@
         {
             //await roundRobin.IniciarEjecucion();
             Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
-           Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
+            Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
             //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
             //Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
             StateHasChanged();
@@ -439,6 +522,12 @@
 
     public async Task IniciarBloque()
     {
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
+        EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
+
+        EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
         //await bloqueControl.AgregarProcesoInicial();
     }
 
@@ -451,7 +540,23 @@
     }
     public async Task Agregar()
     {
+        var containsname= false;
+        string Pname = "";
+         Random rnd = new Random();
+         int numero = rnd.Next(2, 9);
+        do
+        {
+            int ascii_index = rnd.Next(97, 122); 
+            char letra = Convert.ToChar(ascii_index);
+           Pname = letra.ToString() + numero;
+            containsname = EstadoInicial.ProcesosListos.Any(o => o.Name == Pname);
+        } while (containsname==true);
+
+        
+
+        EstadoInicial.ProcesosListos.Enqueue(new Proceso { Name = Pname, Rafaga = numero, TiempoLlegada = EstadoInicial.TiempoGlobal });
         //await bloqueControl.AgregarNuevoProceso();
+
 
     }
 
