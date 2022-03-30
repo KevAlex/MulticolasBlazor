@@ -54,9 +54,6 @@
                         <th>Tiempo Llegada</th>
                         <th>Rafaga</th>
                         <th>Tiempo Comienzo</th>
-                        <th>Tiempo Final</th>
-                        <th>Tiempo Retorno</th>
-                        <th>Tiempo Espera</th>
                         <th> Algoritmo </th>
                     </TableHeader>
                     <RowTemplate>
@@ -96,51 +93,7 @@
                             @context.TiempoComienzo
                             }
                     </td>
-                    <td style="border: 1px solid #ddd">
-
-                        @if (@context.TiempoFinalH.Any())
-                            {
-                                foreach (var item in context.TiempoFinalH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoFinal
-                            }
-                    </td>
-                    <td style="border: 1px solid #ddd">
-                        @if (@context.RetornoH.Any())
-                            {
-                                foreach (var item in context.RetornoH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoRetorno
-
-                            }
-                    </td>
-                    <td style="border: 1px solid #ddd">
-                        @if (@context.EsperaH.Any())
-                            {
-                                foreach (var item in context.EsperaH)
-                                {
-                                @item
-                                <p style="display:inline">,</p>
-                                }
-                            }
-                            else
-                            {
-                            @context.TiempoEspera
-
-                            }
-                    </td>
+                   
                     <td>
                         @context.Algoritmo
                     </td>
@@ -152,7 +105,72 @@
             {
                 @*<p style="text-align:center">No hay más procesos en el estado Listo</p>*@
                 <div class="alert alert-danger" role="alert" style="text-align:center">
-                    No hay procesos en el estado Listo
+                    No hay procesos en la cola RoundRobin
+                </div>
+            }
+
+        </div>
+         <div class="col">
+            @if (EstadoInicial.ProcesosListosFO.Any())
+            {
+                <TablaComponent Items=EstadoInicial.ProcesosListosFO>
+                    <TableHeader>
+                        <th>Proceso</th>
+                        <th>Tiempo Llegada</th>
+                        <th>Rafaga</th>
+                        <th>Tiempo Comienzo</th>
+                        <th> Algoritmo </th>
+                    </TableHeader>
+                    <RowTemplate>
+                        <td style="border: 1px solid #ddd">
+                            @context.Name
+                        </td>
+                        <td style="border: 1px solid #ddd">
+                            @context.TiempoLlegada
+                        </td>
+                        <td style="border: 1px solid #ddd">
+
+                            @if (@context.RafagaH.Any())
+                            {
+                                foreach (var item in context.RafagaH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.RafagaTemporal
+                            }
+                    </td>
+                    <td style="border: 1px solid #ddd">
+
+                        @if (@context.TiempoComienzoH.Any())
+                            {
+                                foreach (var item in context.TiempoComienzoH)
+                                {
+                                @item
+                                <p style="display:inline">,</p>
+                                }
+                            }
+                            else
+                            {
+                            @context.TiempoComienzo
+                            }
+                    </td>
+                   
+                    <td>
+                        @context.Algoritmo
+                    </td>
+                </RowTemplate>
+            </TablaComponent>
+
+            }
+            else
+            {
+                @*<p style="text-align:center">No hay más procesos en el estado Listo</p>*@
+                <div class="alert alert-danger" role="alert" style="text-align:center">
+                    No hay procesos en la cola FCFS
                 </div>
             }
 

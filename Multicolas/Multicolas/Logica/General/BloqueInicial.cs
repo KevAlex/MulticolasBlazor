@@ -26,7 +26,7 @@
                     {
                         randomChar = (char)rnd.Next('a', 'z');
                         randomnumber = rnd.Next(0, 9);
-                        randomRafaga = rnd.Next(1, 4);
+                        randomRafaga = rnd.Next(1, 6);
                         EstadoInicial.InicialProceso.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "RR" });
                         Console.WriteLine(randomChar);
                         contadorNuevo++;
@@ -40,7 +40,7 @@
                     {
                         randomChar = (char)rnd.Next('a', 'z');
                         randomnumber = rnd.Next(0, 9);
-                        randomRafaga = rnd.Next(1, 4);
+                        randomRafaga = rnd.Next(1, 6);
                         inicialProcesosFCFS.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "FCFS" });
                         Console.WriteLine(randomChar);
                     }
