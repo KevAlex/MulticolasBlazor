@@ -31,7 +31,7 @@ namespace Multicolas.Logica.General
         public static Queue<Proceso> OrganizarLista(List<Proceso> listaInicial)
         {
             Queue<Proceso> interno = new Queue<Proceso>();
-            List<Proceso> sortedProcesos = InicialProceso.OrderBy(o => o.TiempoLlegada).ToList();
+            List<Proceso> sortedProcesos = listaInicial.OrderBy(o => o.TiempoLlegada).ToList();
 
             foreach (Proceso item in sortedProcesos)
             {
@@ -48,11 +48,28 @@ namespace Multicolas.Logica.General
             // Organizando la lista basado en la rafaga
             sortedProcesos = cola.OrderBy(o => o.RafagaTemporal).ToList();
 
+            foreach (var item in sortedProcesos)
+            {
+                interno.Enqueue(item);
+            }
+
+            
+
+            return interno;
+        }
+        public static Queue<Proceso> OrganizarColaSJF(Queue<Proceso> cola, int tiempo)
+        {
+            Queue<Proceso> interno = new Queue<Proceso>();
+            List<Proceso> sortedProcesos = new List<Proceso>();
+            // Organizando la lista basado en la rafaga
+            sortedProcesos = cola.OrderBy(o => o.TiempoLlegada > tiempo).ThenBy(o => o.Rafaga).ToList();
 
             foreach (var item in sortedProcesos)
             {
                 interno.Enqueue(item);
             }
+
+
 
             return interno;
         }

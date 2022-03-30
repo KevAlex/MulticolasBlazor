@@ -26,17 +26,13 @@ namespace Multicolas.Logica.SJF
         public async Task IniciarEjecucion()
         {
 
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 5, TiempoLlegada = 3 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 5 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
-            EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 4, TiempoLlegada = 0 });
 
-            EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
+           
             
 
-            while (EstadoInicial.ProcesosListos.Count > 0)
+            while (EstadoInicial.ProcesosListosSJF.Count > 0)
             {
-                EstadoInicial.ProcesosListos = EstadoInicial.OrganizarCola(EstadoInicial.ProcesosListos);
+                EstadoInicial.ProcesosListosSJF = EstadoInicial.OrganizarColaSJF(EstadoInicial.ProcesosListosSJF, EstadoInicial.TiempoGlobal);
 
                 Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
 
@@ -94,7 +90,7 @@ namespace Multicolas.Logica.SJF
 
         public async Task<Proceso> IniciarSJF(Proceso procesoEntrante)
         {
-            EstadoInicial.ProcesosListos = EstadoInicial.OrganizarCola(EstadoInicial.ProcesosListos);
+            EstadoInicial.ProcesosListosSJF = EstadoInicial.OrganizarColaSJF(EstadoInicial.ProcesosListosSJF, EstadoInicial.TiempoGlobal);
             //Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
@@ -119,14 +115,11 @@ namespace Multicolas.Logica.SJF
                 await estadoEjecucion.Ejecutar(siguiente);
                 EstadoInicial.TiempoGlobal++;
                 EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
-                Console.WriteLine(siguiente.Name + " ProcesoGrafico");
+                
                 await Task.Delay(1500);
 
               
-              // StateHasChanged();
-
-              
-                Console.WriteLine($"Quantum: {quantumAlterno}");
+             
             }
             if (EstadoInicial.ListaEjecucion.Contains(siguiente))
             {

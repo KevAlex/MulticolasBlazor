@@ -9,6 +9,7 @@
         int randomLlegada;
         int contadorNuevo = 0;
         public List<Proceso> inicialProcesosFCFS = new List<Proceso>();
+        public List<Proceso> inicialProcesosSJF = new List<Proceso>();
 
         public Task AgregarProcesoInicial(string algoritmo)
         {
@@ -50,6 +51,16 @@
                     break;
 
                 case "SJF":
+                    for (int i = 0; i < 3; i++)
+                    {
+                        randomChar = (char)rnd.Next('a', 'z');
+                        randomnumber = rnd.Next(0, 9);
+                        randomRafaga = rnd.Next(1, 6);
+                        inicialProcesosSJF.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "SJF" });
+                        Console.WriteLine(randomChar);
+                    }
+                    EstadoInicial.ProcesosListosSJF = EstadoInicial.OrganizarLista(inicialProcesosSJF);
+
                     break;
 
             }
@@ -75,6 +86,16 @@
             randomnumber = rnd.Next(0, 9);
             randomRafaga = rnd.Next(4, 7);
             EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga, Algoritmo = "FCFS" });
+            contadorNuevo++;
+            return Task.CompletedTask;
+        }
+
+        public Task AgregarNuevoProcesoSJF()
+        {
+            randomChar = (char)rnd.Next('a', 'z');
+            randomnumber = rnd.Next(0, 9);
+            randomRafaga = rnd.Next(4, 7);
+            EstadoInicial.ProcesosListosSJF.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga, Algoritmo = "SJF" });
             contadorNuevo++;
             return Task.CompletedTask;
         }
