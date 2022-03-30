@@ -51,7 +51,29 @@ namespace Multicolas.Logica.RoundRobin
 
                 await Task.Delay(1500);
                 // StateHasChanged();
+                if ((EstadoInicial.ProcesosListosFO.Peek().envejecimiento <= 0)&&(EstadoInicial.ProcesosListosFO.Count>1))
+                {
+                    Proceso cambio = EstadoInicial.ProcesosListosFO.Dequeue();
+                    cambio.envejecimiento = 5;
+                    EstadoInicial.ProcesosListos.Enqueue(cambio);
 
+                }
+                else
+                {
+                    EstadoInicial.ProcesosListosFO.Peek().envejecimiento--;
+                }
+
+                if ((EstadoInicial.ProcesosListosSJF.Peek().envejecimiento <= 0) && (EstadoInicial.ProcesosListosSJF.Count > 1))
+                {
+                    Proceso cambio = EstadoInicial.ProcesosListosSJF.Dequeue();
+                    cambio.envejecimiento = 5;
+                    EstadoInicial.ProcesosListosFO.Enqueue(cambio);
+
+                }
+                else
+                {
+                    EstadoInicial.ProcesosListosSJF.Peek().envejecimiento--;
+                }
                 quantumAlterno++;
                 Console.WriteLine($"Quantum: {quantumAlterno}");
             }

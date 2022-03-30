@@ -488,22 +488,23 @@
 
         while ((EstadoInicial.ProcesosListos.Count  > 0) || (EstadoInicial.ProcesosListosFO.Count  > 0) || (EstadoInicial.ProcesosListosSJF.Count > 0))
         {
-            
-             // Revisar esto!!!!
-        //int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
 
-        // Solo para RoundRobin y SJF
-        //EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
+            // Revisar esto!!!!
+            //int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
 
-        // Al llamar un algoritmo usar: await xxx.Iniciar
+            // Solo para RoundRobin y SJF
+            //EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
 
-        while (EstadoInicial.ProcesosListos.Count > 0)
-        {
-            Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
-            //Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
-            //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
-            Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
-            StateHasChanged();
+            // Al llamar un algoritmo usar: await xxx.Iniciar
+
+            while (EstadoInicial.ProcesosListos.Count > 0)
+            {
+                Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
+                //Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
+                //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
+                Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
+                StateHasChanged();
+               
 
             tiempoUi.Add(EstadoInicial.TiempoGlobal);
             rafagas.Add(EstadoInicial.TiempoGlobal);
