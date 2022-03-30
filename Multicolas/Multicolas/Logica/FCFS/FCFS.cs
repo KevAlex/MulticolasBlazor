@@ -47,7 +47,17 @@ namespace Multicolas.Logica.FCFS
                 EstadoInicial.ProcesoGrafico.Add(new ProcesoUI { Id = siguiente.Name, Posicion = EstadoInicial.TiempoGlobal, Color = "green" });
                 Console.WriteLine(siguiente.Name + " ProcesoGrafico");
                 await Task.Delay(1500);
+                if ((EstadoInicial.ProcesosListosSJF.Peek().envejecimiento <= 0) && (EstadoInicial.ProcesosListosSJF.Count > 1))
+                {
+                    Proceso cambio = EstadoInicial.ProcesosListosSJF.Dequeue();
+                    cambio.envejecimiento = 5;
+                    EstadoInicial.ProcesosListosFO.Enqueue(cambio);
 
+                }
+                else
+                {
+                    EstadoInicial.ProcesosListosSJF.Peek().envejecimiento--;
+                }
 
                 // StateHasChanged();
 
