@@ -35,15 +35,13 @@
 
     }
 
-    <p style="color:blue">Quantum de tiempo (incluyendo el cero): quantum </p>
+    <p style="color:blue">Quantum de tiempo (incluyendo el cero): 2 </p>
 
 </div>
 
 
 <br />
 <br />
-
-
 
 <div class="container">
     <div class=row>
@@ -59,6 +57,7 @@
                         <th>Tiempo Final</th>
                         <th>Tiempo Retorno</th>
                         <th>Tiempo Espera</th>
+                        <th> Algoritmo </th>
                     </TableHeader>
                     <RowTemplate>
                         <td style="border: 1px solid #ddd">
@@ -142,6 +141,9 @@
 
                             }
                     </td>
+                    <td>
+                        @context.Algoritmo
+                    </td>
                 </RowTemplate>
             </TablaComponent>
 
@@ -169,6 +171,7 @@
                         <th>Tiempo Final</th>
                         <th>Tiempo Retorno</th>
                         <th>Tiempo Espera</th>
+                        <th>Algoritmo</th>
                     </TableHeader>
                     <RowTemplate>
                         <td style="border: 1px solid #ddd">
@@ -241,6 +244,7 @@
 
                             }
                     </td>
+                    <td>@context.Algoritmo</td>
                 </RowTemplate>
             </TablaComponent>
             }
@@ -326,9 +330,7 @@
             }
         }
 
-
     }
-
 
 }
 @*// Dibujando los tiempos de espera*@
@@ -398,11 +400,7 @@
     public async Task IniciarEjecucion()
     {
 
-        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
-        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 3, TiempoLlegada = 2 });
-        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 4, TiempoLlegada = 1 });
-        //EstadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 2, TiempoLlegada = 0 });
-        
+
         // Revisar esto!!!!
         //int tiempoLLegada = EstadoInicial.InicialProceso.LastOrDefault().TiempoLlegada;
 
@@ -434,6 +432,10 @@
 
         if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
         {
+            foreach (var item in EstadoInicial.ProcesosListosFO)
+            {
+                Console.WriteLine("FCFS -***" + item.Name);
+            }
             while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
             {
                 Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
@@ -458,7 +460,9 @@
     public async Task AgregarRR()
     {
         EstadoInicial.NuevoProceso = true;
-     // Revisar valor del contador
+        @*Proceso procesoExpulsar = EstadoInicial.ListaEjecucion.First();*@
+        //procesoExpulsar.Expulsado = true;
+        // Revisar valor del contador
         await bloqueInicial.AgregarNuevoProceso();
 
     }
@@ -482,23 +486,16 @@
 
     public async Task IniciarBloque()
     {
-        //await bloqueControl.AgregarProcesoInicial();
         // Lineas Solo de prueba
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada =  1, RafagaTemporal = 3 });
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = 2, RafagaTemporal = 3 });
-        EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = 3, RafagaTemporal = 2 });
+        @* EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 5, TiempoLlegada =  1, RafagaTemporal = 5, Algoritmo = "FCFS" });
+            EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = 2, RafagaTemporal = 3, Algoritmo = "FCFS"  });
+            EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = 3, RafagaTemporal = 2, Algoritmo = "FCFS"  });*@
 
-        await bloqueInicial.AgregarProcesoInicial();
-
-    }
-
-    public async Task Reinicio()
-    {
-        //EstadoInicial.ProcesosListos.Clear();
-        //EstadoInicial.ListaEjecucion.Clear();
-        //EstadoInicial.FinalProceso.Clear();
+        bloqueInicial.AgregarProcesoInicial("RR");
+        await bloqueInicial.AgregarProcesoInicial("FCFS");
 
     }
+
 
 
 

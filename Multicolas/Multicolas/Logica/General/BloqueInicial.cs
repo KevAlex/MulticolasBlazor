@@ -8,36 +8,52 @@
         int randomRafaga;
         int randomLlegada;
         int contadorNuevo = 0;
+        public List<Proceso> inicialProcesosFCFS = new List<Proceso>();
 
-        public Task AgregarProcesoInicial()
+        public Task AgregarProcesoInicial(string algoritmo)
         {
-            //_estadoInicial.InicialProceso.Add(new Proceso { Name = "A", Rafaga = 1, TiempoLlegada = 3 });
-            //_estadoInicial.InicialProceso.Add(new Proceso { Name = "b", Rafaga = 1, TiempoLlegada = 5 });
-            //_estadoInicial.InicialProceso.Add(new Proceso { Name = "c", Rafaga = 1, TiempoLlegada = 1 });
-            //_estadoInicial.InicialProceso.Add(new Proceso { Name = "d", Rafaga = 1, TiempoLlegada = 0 });
-
-            //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'a', Rafaga = 8, TiempoLlegada = 0 });
-            //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'b', Rafaga = 4, TiempoLlegada = 1 });
-            //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'c', Rafaga = 9, TiempoLlegada = 2 });
-            //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'd', Rafaga = 5, TiempoLlegada = 3 });
-            //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'e', Rafaga = 2, TiempoLlegada = 4 });
-
 
             //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'a', Rafaga = 5, TiempoLlegada = 0 });
             //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'b', Rafaga = 3, TiempoLlegada = 1 });
             //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'c', Rafaga = 2, TiempoLlegada = 2 });
             //EstadoInicial.InicialProceso.Add(new Proceso { Name = 'd', Rafaga = 1, TiempoLlegada = 3 });
 
-            for (int i = 0; i < 3; i++)
+            switch (algoritmo)
             {
-                randomChar = (char)rnd.Next('a', 'z');
-                randomnumber = rnd.Next(0, 9);
-                randomRafaga = rnd.Next(1, 4);
-                EstadoInicial.InicialProceso.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga });
-                Console.WriteLine(randomChar);
-                contadorNuevo++;
+                case "RR":
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        randomChar = (char)rnd.Next('a', 'z');
+                        randomnumber = rnd.Next(0, 9);
+                        randomRafaga = rnd.Next(1, 4);
+                        EstadoInicial.InicialProceso.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "RR" });
+                        Console.WriteLine(randomChar);
+                        contadorNuevo++;
+                    }
+                    EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
+                    break;
+
+                case "FCFS":
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        randomChar = (char)rnd.Next('a', 'z');
+                        randomnumber = rnd.Next(0, 9);
+                        randomRafaga = rnd.Next(1, 4);
+                        inicialProcesosFCFS.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "FCFS" });
+                        Console.WriteLine(randomChar);
+                    }
+                    EstadoInicial.ProcesosListosFO = EstadoInicial.OrganizarListaFCFS(inicialProcesosFCFS);
+
+
+                    break;
+
+                case "SJF":
+                    break;
+
             }
-            EstadoInicial.ProcesosListos = EstadoInicial.OrganizarLista(EstadoInicial.InicialProceso);
+
             return Task.CompletedTask;
         }
 
@@ -46,8 +62,10 @@
             randomChar = (char)rnd.Next('a', 'z');
             randomnumber = rnd.Next(0, 9);
             randomRafaga = rnd.Next(2, 7);
-            EstadoInicial.ProcesosListos.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga });
+            EstadoInicial.ProcesosListos.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga, Algoritmo = "RR" });
             contadorNuevo++;
+
+
             return Task.CompletedTask;
         }
 
@@ -55,8 +73,8 @@
         {
             randomChar = (char)rnd.Next('a', 'z');
             randomnumber = rnd.Next(0, 9);
-            randomRafaga = rnd.Next(2, 7);
-            EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga });
+            randomRafaga = rnd.Next(4, 7);
+            EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = contadorNuevo, Rafaga = randomRafaga, RafagaTemporal = randomRafaga, Algoritmo = "FCFS" });
             contadorNuevo++;
             return Task.CompletedTask;
         }

@@ -11,6 +11,7 @@
         public int TiempoEspera { get; set; } = 0;
         public int TiempoRetorno { get; set; } = 0;
 
+        public string Algoritmo { get; set; }
         public List<int> RafagaH { get; set; } = new List<int>();
         public List<int> TiempoComienzoH { get; set; } = new List<int>();
         public List<int> TiempoFinalH { get; set; } = new List<int>();

@@ -48,30 +48,25 @@ namespace Multicolas.Logica.General
             // Organizando la lista basado en la rafaga
             sortedProcesos = cola.OrderBy(o => o.RafagaTemporal).ToList();
 
-            //foreach (Proceso item in cola)
-            //{
-            //    //if (item.TiempoLlegada <= EstadoInicial.TiempoGlobal)
-            //    //{
-            //    //&& (cola.Any(t => t.Name == item.Name)) == false
-            //    sortedProcesos.Add(item);
-            //    //interno.Enqueue(item);
-
-            //    //}
-
-            //    // Dos rafagas iguales definir logica para ordenar?
-            //    //item.RafagaTemporal = item.Rafaga;
-            //    Console.WriteLine($"name: {item.Name}, Rafaga: {item.Rafaga}");
-            //}
-            //sortedProcesos = sortedProcesos.OrderBy(o => o.RafagaTemporal).ToList();
 
             foreach (var item in sortedProcesos)
             {
                 interno.Enqueue(item);
             }
 
-            //interno = (Queue<Proceso>)interno.OrderBy(o => o.RafagaTemporal);
+            return interno;
+        }
 
-            //List<Proceso> sortedProcesos = interno.OrderBy(o => o.RafagaTemporal).ToList();
+        public static Queue<Proceso> OrganizarListaFCFS(List<Proceso> listaInicial)
+        {
+            Queue<Proceso> interno = new Queue<Proceso>();
+            List<Proceso> sortedProcesos = listaInicial.OrderBy(o => o.TiempoLlegada).ToList();
+
+            foreach (Proceso item in sortedProcesos)
+            {
+                item.RafagaTemporal = item.Rafaga;
+                interno.Enqueue(item);
+            }
 
             return interno;
         }
