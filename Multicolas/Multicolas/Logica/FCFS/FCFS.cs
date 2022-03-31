@@ -50,7 +50,7 @@ namespace Multicolas.Logica.FCFS
                 if ((EstadoInicial.ProcesosListosSJF.Peek().envejecimiento <= 0) && (EstadoInicial.ProcesosListosSJF.Count > 1))
                 {
                     Proceso cambio = EstadoInicial.ProcesosListosSJF.Dequeue();
-                    cambio.envejecimiento = 5;
+                    cambio.envejecimiento = 20;
                     EstadoInicial.ProcesosListosFO.Enqueue(cambio);
 
                 }

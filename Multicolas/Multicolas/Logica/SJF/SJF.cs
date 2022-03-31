@@ -52,7 +52,7 @@ namespace Multicolas.Logica.SJF
 
                 }
 
-                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false )
+                while (siguiente.RafagaTemporal > 0 && EstadoInicial.ProcesoBloqueado == false && EstadoInicial.NuevoProceso == false)
                 {
                     await estadoEjecucion.Ejecutar(siguiente);
                     EstadoInicial.TiempoGlobal++;

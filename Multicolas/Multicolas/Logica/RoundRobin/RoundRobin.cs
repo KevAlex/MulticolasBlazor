@@ -54,7 +54,7 @@ namespace Multicolas.Logica.RoundRobin
                 if ((EstadoInicial.ProcesosListosFO.Peek().envejecimiento <= 0)&&(EstadoInicial.ProcesosListosFO.Count>1))
                 {
                     Proceso cambio = EstadoInicial.ProcesosListosFO.Dequeue();
-                    cambio.envejecimiento = 5;
+                    cambio.envejecimiento = 10;
                     EstadoInicial.ProcesosListos.Enqueue(cambio);
 
                 }
@@ -66,7 +66,7 @@ namespace Multicolas.Logica.RoundRobin
                 if ((EstadoInicial.ProcesosListosSJF.Peek().envejecimiento <= 0) && (EstadoInicial.ProcesosListosSJF.Count > 1))
                 {
                     Proceso cambio = EstadoInicial.ProcesosListosSJF.Dequeue();
-                    cambio.envejecimiento = 5;
+                    cambio.envejecimiento = 20;
                     EstadoInicial.ProcesosListosFO.Enqueue(cambio);
 
                 }
