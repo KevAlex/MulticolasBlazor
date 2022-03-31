@@ -7,7 +7,7 @@
 <PageTitle>Index</PageTitle>
 
 <div class="alert alert-info" role="alert" style="text-align:center; height:70px">
-    <h3>Algoritmo Round Robin / Multicolas</h3>
+    <h3>Multicolas</h3>
 </div>
 
 <div style="text-align:center; ">
@@ -16,9 +16,11 @@
     <button type="button" class="btn btn-primary" @onclick="AgregarRR">Agregar proceso a RR</button>
     <button type="button" class="btn btn-primary" @onclick="AgregarFO">Agregar proceso a FCFS</button>
     <button type="button" class="btn btn-primary" @onclick="AgregarSJF">Agregar proceso a SJF</button>
-    <button type="button" class="btn btn-danger" @onclick="Bloquear">Bloquear proceso</button>
-    @*<button @onclick="Reinicio">Reiniciar</button>*@
+    <button type="button" class="btn btn-danger" @onclick="BloquearRR">Bloquear proceso RR</button>
+    <button type="button" class="btn btn-danger" @onclick="BloquearFC">Bloquear proceso FCFS</button>
+    <button type="button" class="btn btn-danger" @onclick="BloquearSJF">Bloquear proceso SJF</button>
 
+    @*<button @onclick="Reinicio">Reiniciar</button>*@
 
 </div>
 
@@ -36,7 +38,6 @@
         <p style="color:red">(Semaforo) Sección critica ocupada</p>
 
     }
-
     <p style="color:blue">Quantum de tiempo (incluyendo el cero): 3 </p>
 
 </div>
@@ -504,36 +505,36 @@
                 //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
                 Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
                 StateHasChanged();
-               
 
-            tiempoUi.Add(EstadoInicial.TiempoGlobal);
-            rafagas.Add(EstadoInicial.TiempoGlobal);
-            tiempoUi.Add(EstadoInicial.TiempoGlobal);
-        }
 
-        //
-        //int tiempoLLegada = EstadoInicial.FinalProceso.LastOrDefault().TiempoLlegada;
-        EstadoInicial.NuevoProceso = false;
-
-        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada + 1, RafagaTemporal = 3 });
-        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada + 2, RafagaTemporal = 3 });
-        //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada + 3, RafagaTemporal = 2 });
-         Console.WriteLine("SJF" );
-        if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
-        {
-            foreach (var item in EstadoInicial.ProcesosListosFO)
-            {
-                Console.WriteLine("FCFS -***" + item.Name);
+                tiempoUi.Add(EstadoInicial.TiempoGlobal);
+                rafagas.Add(EstadoInicial.TiempoGlobal);
+                tiempoUi.Add(EstadoInicial.TiempoGlobal);
             }
-            while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
+
+            //
+            //int tiempoLLegada = EstadoInicial.FinalProceso.LastOrDefault().TiempoLlegada;
+            EstadoInicial.NuevoProceso = false;
+
+            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada + 1, RafagaTemporal = 3 });
+            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada + 2, RafagaTemporal = 3 });
+            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada + 3, RafagaTemporal = 2 });
+            Console.WriteLine("SJF" );
+            if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
             {
-                Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
-                await fcfs.IniciarFCFS(procesoSiguiente);
+                foreach (var item in EstadoInicial.ProcesosListosFO)
+                {
+                    Console.WriteLine("FCFS -***" + item.Name);
+                }
+                while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
+                {
+                    Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
+                    await fcfs.IniciarFCFS(procesoSiguiente);
+                }
+
             }
-           
-        }
-        else 
-            if ((EstadoInicial.ProcesosListos.Count == 0) || (EstadoInicial.ProcesosListosFO.Count == 0) && (EstadoInicial.ProcesosListosSJF.Count > 0))
+            else 
+                if ((EstadoInicial.ProcesosListos.Count == 0) || (EstadoInicial.ProcesosListosFO.Count == 0) && (EstadoInicial.ProcesosListosSJF.Count > 0) && (EstadoInicial.NuevoProceso == false))
             {
                 while ((EstadoInicial.ProcesosListosSJF.Count > 0) && (EstadoInicial.NuevoProceso == false))
                 {
@@ -542,9 +543,9 @@
                     await sjf.IniciarSJF(procesoSiguiente);
                 }
             }
-        
+
         }
-       
+
 
     }
 
@@ -555,7 +556,6 @@
         //procesoExpulsar.Expulsado = true;
         // Revisar valor del contador
         await bloqueInicial.AgregarNuevoProceso();
-
     }
 
     public async Task AgregarFO()
@@ -566,15 +566,43 @@
 
     public async Task AgregarSJF()
     {
-        EstadoInicial.NuevoProceso = true;
         await bloqueInicial.AgregarNuevoProcesoSJF();
     }
-    public async Task Bloquear()
+    public async Task BloquearRR()
     {
-        //await bloqueControl.AgregarProcesoInicial();
+        EstadoInicial.ProcesoBloqueado = true;
+        foreach (Proceso bloqueado in EstadoInicial.ListaEjecucion)
+        {
+            bloqueado.FueBloqueado = true;
+            // Genera simplemente un Warning en el navegador
+            EstadoInicial.ListaEjecucion.Remove(bloqueado);
+            EstadoInicial.ProcesosListos.Enqueue(bloqueado);
+        }
     }
 
+    public async Task BloquearFC()
+    {
+        EstadoInicial.ProcesoBloqueado = true;
+        foreach (Proceso bloqueado in EstadoInicial.ListaEjecucion)
+        {
+            bloqueado.FueBloqueado = true;
+            // Genera simplemente un Warning en el navegador
+            EstadoInicial.ListaEjecucion.Remove(bloqueado);
+            EstadoInicial.ProcesosListosFO.Enqueue(bloqueado);
+        }
+    }
 
+    public async Task BloquearSJF()
+    {
+        EstadoInicial.ProcesoBloqueado = true;
+        foreach (Proceso bloqueado in EstadoInicial.ListaEjecucion)
+        {
+            bloqueado.FueBloqueado = true;
+            // Genera simplemente un Warning en el navegador
+            EstadoInicial.ListaEjecucion.Remove(bloqueado);
+            EstadoInicial.ProcesosListosSJF.Enqueue(bloqueado);
+        }
+    }
     public async Task IniciarBloque()
     {
         // Lineas Solo de prueba

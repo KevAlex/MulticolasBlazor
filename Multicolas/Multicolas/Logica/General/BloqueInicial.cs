@@ -22,12 +22,11 @@
             switch (algoritmo)
             {
                 case "RR":
-
                     for (int i = 0; i < 3; i++)
                     {
                         randomChar = (char)rnd.Next('a', 'z');
                         randomnumber = rnd.Next(0, 9);
-                        randomRafaga = rnd.Next(1, 6);
+                        randomRafaga = rnd.Next(1, 5);
                         EstadoInicial.InicialProceso.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "RR" });
                         Console.WriteLine(randomChar);
                         contadorNuevo++;
@@ -36,18 +35,15 @@
                     break;
 
                 case "FCFS":
-
                     for (int i = 0; i < 3; i++)
                     {
                         randomChar = (char)rnd.Next('a', 'z');
                         randomnumber = rnd.Next(0, 9);
-                        randomRafaga = rnd.Next(1, 6);
+                        randomRafaga = rnd.Next(2, 5);
                         inicialProcesosFCFS.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "FCFS" });
                         Console.WriteLine(randomChar);
                     }
                     EstadoInicial.ProcesosListosFO = EstadoInicial.OrganizarListaFCFS(inicialProcesosFCFS);
-
-
                     break;
 
                 case "SJF":
@@ -55,7 +51,7 @@
                     {
                         randomChar = (char)rnd.Next('a', 'z');
                         randomnumber = rnd.Next(0, 9);
-                        randomRafaga = rnd.Next(1, 6);
+                        randomRafaga = rnd.Next(1, 7);
                         inicialProcesosSJF.Add(new Proceso { Name = randomChar.ToString() + randomnumber, TiempoLlegada = i, Rafaga = randomRafaga, Algoritmo = "SJF" });
                         Console.WriteLine(randomChar);
                     }
