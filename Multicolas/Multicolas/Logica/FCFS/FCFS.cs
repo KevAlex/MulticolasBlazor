@@ -17,15 +17,11 @@ namespace Multicolas.Logica.FCFS
             estadoEjecucion = new EstadoEjecucionFC();
         }
 
-
-
-
         public async Task<Proceso> IniciarFCFS(Proceso procesoEntrante)
         {
             //Proceso siguiente = EstadoInicial.ProcesosListos.Dequeue();
             Proceso siguiente = procesoEntrante;
             siguiente.TiempoComienzo = EstadoInicial.TiempoGlobal;
-
 
             // Historial de tiempos
             if ((siguiente.TiempoComienzoH.Contains(siguiente.TiempoComienzo) == false) ||
@@ -52,14 +48,11 @@ namespace Multicolas.Logica.FCFS
                     Proceso cambio = EstadoInicial.ProcesosListosSJF.Dequeue();
                     cambio.envejecimiento = 20;
                     EstadoInicial.ProcesosListosFO.Enqueue(cambio);
-
                 }
                 else
                 {
                     EstadoInicial.ProcesosListosSJF.Peek().envejecimiento--;
                 }
-
-                // StateHasChanged();
 
             }
             if (EstadoInicial.ListaEjecucion.Contains(siguiente))
@@ -78,7 +71,7 @@ namespace Multicolas.Logica.FCFS
             }
             EstadoInicial.ProcesoBloqueado = false;
             siguiente.Bloqueado = false;
-            Console.WriteLine("Hola" + siguiente.Name);
+            //Console.WriteLine("Hola" + siguiente.Name);
             return siguiente;
         }
     }

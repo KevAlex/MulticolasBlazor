@@ -10,7 +10,7 @@
         public int TiempoFinal { get; set; } = 0;
         public int TiempoEspera { get; set; } = 0;
         public int TiempoRetorno { get; set; } = 0;
-        public int envejecimiento { get; set; } = 5;
+        public int envejecimiento { get; set; } = 20;
         public string Algoritmo { get; set; }
         public List<int> RafagaH { get; set; } = new List<int>();
         public List<int> TiempoComienzoH { get; set; } = new List<int>();

@@ -33,20 +33,9 @@ namespace Multicolas.Logica.SJF
 
 
             EstadoInicial.Semaforo = true;
-            //Console.WriteLine("Proceso en ejecucion " + procesoN.Name + " Llegada " + procesoN.TiempoLlegada + " Rafaga " + procesoN.Rafaga + " RafTem: " + procesoN.RafagaTemporal
-            //    + " Tiempo General " + EstadoInicial.TiempoGlobal);
-
-
-
-            if (EstadoInicial.ProcesoBloqueado == false)
+            if (EstadoInicial.ProcesoBloqueado == false && EstadoInicial.NuevoProceso == false)
             {
                 procesoN.RafagaTemporal -= 1;
-                //contadorUI++;
-                //procesoN.PosicionUI = contadorUI + procesoN.TiempoComienzoAlterno;
-
-                //await _stateFacade.nuevoAtributo(procesoN);
-
-                //EstadoInicial.TiempoGlobal++;
             }
 
             if (EstadoInicial.ProcesoBloqueado == true && procesoN.FueBloqueado == true)

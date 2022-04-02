@@ -447,8 +447,6 @@
 
     Queue<Proceso> UiList = new Queue<Proceso>();
     Proceso procesoUi = new Proceso();
-    List<int> rafagas = new List<int>();
-    List<int> tiempoUi = new List<int>();
     List<ProcesoUI> procesoUIs = new List<ProcesoUI>();
     private int aux = 0;
     private double poscTemp = 0.0;
@@ -500,32 +498,23 @@
 
             while (EstadoInicial.ProcesosListos.Count > 0)
             {
+                Console.WriteLine("RR" );
                 Proceso procesoSiguiente = EstadoInicial.ProcesosListos.Dequeue();
                 //Proceso procesoDibujar = await sjf.IniciarSJF(procesoSiguiente);
                 //Proceso procesoDibujar = await fcfs.IniciarFCFS(procesoSiguiente);
                 Proceso procesoDibujar = await roundRobin.IniciaRoundRobin(procesoSiguiente);
                 StateHasChanged();
 
-
-                tiempoUi.Add(EstadoInicial.TiempoGlobal);
-                rafagas.Add(EstadoInicial.TiempoGlobal);
-                tiempoUi.Add(EstadoInicial.TiempoGlobal);
             }
 
             //
             //int tiempoLLegada = EstadoInicial.FinalProceso.LastOrDefault().TiempoLlegada;
             EstadoInicial.NuevoProceso = false;
 
-            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "j", Rafaga = 3, TiempoLlegada = tiempoLLegada + 1, RafagaTemporal = 3 });
-            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "k", Rafaga = 3, TiempoLlegada = tiempoLLegada + 2, RafagaTemporal = 3 });
-            //EstadoInicial.ProcesosListosFO.Enqueue(new Proceso { Name = "l", Rafaga = 2, TiempoLlegada = tiempoLLegada + 3, RafagaTemporal = 2 });
-            Console.WriteLine("SJF" );
+           
             if ((EstadoInicial.ProcesosListos.Count == 0) && (EstadoInicial.ProcesosListosFO.Count > 0))
             {
-                foreach (var item in EstadoInicial.ProcesosListosFO)
-                {
-                    Console.WriteLine("FCFS -***" + item.Name);
-                }
+                Console.WriteLine("FCFS" );
                 while ((EstadoInicial.ProcesosListosFO.Count > 0) && (EstadoInicial.NuevoProceso == false))
                 {
                     Proceso procesoSiguiente = EstadoInicial.ProcesosListosFO.Dequeue();
@@ -536,6 +525,8 @@
             else 
                 if ((EstadoInicial.ProcesosListos.Count == 0) || (EstadoInicial.ProcesosListosFO.Count == 0) && (EstadoInicial.ProcesosListosSJF.Count > 0) && (EstadoInicial.NuevoProceso == false))
             {
+                Console.WriteLine("SJF");
+
                 while ((EstadoInicial.ProcesosListosSJF.Count > 0) && (EstadoInicial.NuevoProceso == false))
                 {
 
